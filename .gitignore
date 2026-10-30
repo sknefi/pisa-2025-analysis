@@ -1,16 +1,26 @@
+# Lokálne prostredie a dočasné súbory.
 .venv/
 .ipynb_checkpoints/
 __pycache__/
 *.py[cod]
 .DS_Store
 
-# Keep large/raw and generated data out of version control.
-data/raw/*
-data/interim/*
-data/processed/*
-outputs/*
+# Pôvodné dáta zostávajú lokálne; codebook v data/reference/ verzujeme.
+/data/raw/*
+!/data/raw/.gitkeep
 
-!data/raw/.gitkeep
-!data/interim/.gitkeep
-!data/processed/.gitkeep
-!outputs/.gitkeep
+# Generované súbory predchádzajúcej prípravy zostávajú v lokálnom archíve.
+/archive/data/interim/*
+/archive/data/processed/*
+/archive/outputs/*
+!/archive/data/interim/.gitkeep
+!/archive/data/processed/.gitkeep
+!/archive/outputs/.gitkeep
+
+# Rezerva pre neskoršie spracovanie dát a nové výstupy.
+/data/interim/*
+/data/processed/*
+/outputs/*
+!/data/interim/.gitkeep
+!/data/processed/.gitkeep
+!/outputs/.gitkeep
