@@ -137,8 +137,16 @@ def build_dataset(data: Path, output: Path, chunk_size: int = 20_000, force: boo
         if (final_stat.st_size, final_stat.st_mtime_ns) != (original_stat.st_size, original_stat.st_mtime_ns):
             raise ValueError("Pôvodné dáta sa počas prevodu zmenili; výstup sa nepoužije.")
         check = pq.ParquetFile(temporary)
-        if check.metadata.num_rows != rows or check.schema_arrow.names != meta.column_names:
-            raise ValueError("Kontrola výstupnej schémy alebo počtu riadkov zlyhala.")
+        try:
+            if (
+                check.metadata.num_rows != rows
+                or check.schema_arrow.names != meta.column_names
+            ):
+                raise ValueError(
+                    "Kontrola výstupnej schémy alebo počtu riadkov zlyhala."
+                )
+        finally:
+            check.close()
         metadata_temporary.write_bytes(metadata_content + b"\n")
         temporary.replace(output)
         metadata_temporary.replace(metadata_path)
