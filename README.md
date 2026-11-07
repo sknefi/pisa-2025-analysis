@@ -1,7 +1,7 @@
-# PISA 2025 – úvod do dát
+# PISA 2025 – analýza žiackych dát
 
-Spoločný projekt na skúmanie žiackych dát PISA 2025. Aktuálne sa zoznamujeme
-so súborom a významom premenných. Výskumnú otázku a analýzy doplníme postupne.
+Spoločný projekt na skúmanie žiackych dát PISA 2025. Úvodné notebooky vysvetľujú
+prácu s dátami; ďalšie obsahujú analýzy rodinného zázemia, motivácie a používania AI.
 
 **Prvé spustenie:** naklonuj projekt → vytvor prostredie → nainštaluj knižnice
 → doplň dátový súbor → jednorazovo priprav plný Parquet → otvor Jupyter.
@@ -180,6 +180,80 @@ Oba notebooky zdrojové súbory nemenia. Terminál s Jupyterom nechaj počas pr�
 otvorený. Po skončení ulož notebook a server zastav v termináli cez **Ctrl+C**;
 ak si vypýta potvrdenie, potvrď ukončenie.
 
+## 6a. Filip: AI a riešenie digitálnych problémov
+
+Otvor **[06_filip_ai_digitalne_problemy.ipynb](notebooks/06_filip_ai_digitalne_problemy.ipynb)**.
+Otázka znie: *Ako súvisí frekvencia používania AI pri učení s úspešnosťou pri riešení
+digitálnych problémov u českých a slovenských žiakov?* Doplnkovým kontextom je čas
+digitálneho učenia pred vyučovaním a po ňom. Skóre CMPS z oblasti Learning in the
+Digital World hodnotí riešenie problémov pomocou programovania a počítačových modelov.
+
+### Keď už máš projekt a plný Parquet
+
+1. Stiahni zmeny podľa každodenného postupu nižšie. Potom doplň knižnice;
+   virtuálne prostredie ani Parquet sa znova nevytvárajú.
+
+   **Windows – PowerShell:**
+
+   ```powershell
+   .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+   ```
+
+   **macOS / Linux:**
+
+   ```bash
+   .venv/bin/python -m pip install -r requirements.txt
+   ```
+
+2. Over, že v `data/processed/` sú `student_full.parquet` aj príslušný
+   `student_full_metadata.json`. Pôvodný SAV tento notebook nepotrebuje.
+3. Spusti Jupyter podľa kroku 6, otvor notebook 06 a vyber projektové jadro
+   **Python (pisa-2025)**. Použi **Kernel → Restart Kernel and Run All Cells**.
+4. Prejdi vysvetlenia, tabuľky a grafy v poradí. Notebook nájde projekt z koreňa
+   aj z priečinka `notebooks/`; zdrojové dáta nemení. Výstupy obnoví v `outputs/filip/`.
+
+`requirements.txt` zahŕňa **CleverMiner, NumPy a Matplotlib**; nič netreba doinštalovať
+z buniek notebooku. Pri chybe `No module named cleverminer` zopakuj inštaláciu
+z kroku 1 a skontroluj zvolené jadro. Ak nesúhlasia metadáta, doplň oba dátové
+súbory z rovnakého prevodu. Chyby nepotláčaj ani nespúšťaj iba poslednú bunku.
+
+### Čo notebook robí a čo odovzdáva
+
+- Vyberie **Česko + Slovensko**, vyčistí chýbajúce kódy podľa metadát a zobrazí
+  vyradené záznamy. Na aktuálnom súbore zostáva **13 359 žiakov: CZE 7 397, SVK 5 962**.
+- AI rozdelí na nikdy/takmer nikdy, občas a pravidelne; čas digitálneho učenia
+  na 0–1 h, >1–2 h a >2 h denne. V hlavnej analýze používa rovnaký úplný výber.
+- Vyšší výsledok definuje spoločnou hornou štvrtinou `PV1CMPS`; aktuálna hranica
+  je približne **584,28 bodu**. Je to analytická hranica, nie oficiálna úroveň PISA.
+- Ukáže všetky tri skupiny AI a deväť kombinácií s časom učenia. 4ft-Miner má
+  pevné prahy **Base ≥ 100 a confidence ≥ 30 %**; prázdny zoznam je platný výsledok.
+- Doplní kontrolu všetkých 10 PV s rovnakou hranicou, žiackych váh a oboch krajín.
+  Rozsah medzi PV nie je interval spoľahlivosti; výsledky nepreukazujú príčinný účinok AI.
+
+V `outputs/filip/` nájdeš najmä:
+
+| Súbor | Použitie |
+| --- | --- |
+| `podklady_do_prezentacie.md` | Otázka, postup, skutočné zistenia, vybrané príklady a obmedzenia. |
+| `01_ai_a_vysledok.png` | Hlavný graf troch skupín používania AI. |
+| `02_ai_a_cas.png` | Všetkých deväť kombinácií AI a času učenia. |
+| `03_kontrola_krajin.png` | Kontrola samostatne v Česku a na Slovensku. |
+| `04_vybrane_pravidla_a_vahy.png` | Vážený a nevážený výsledok, ak existuje vybrané pravidlo. |
+| `najdene_pravidla.csv`, `vybrane_pravidla.csv` | Všetky nájdené pravidlá a príklady vybrané podľa pevných kritérií. |
+| `citlivost_10pv_suhrn.csv`, `krajiny_pv1.csv` | Kontroly citlivosti a krajín; podrobnosti sú v ďalších CSV. |
+| `vyber_a_vyradenie.csv`, `suhrn.json` | Veľkosť výberu, nastavenia, zdroj dát a verzie knižníc. |
+
+Generované výstupy sú lokálne a Git ich ignoruje. Po spustení ich môžeš zdieľať
+s tímom alebo vložiť do prezentácie; spoluhráči ich vedia vytvoriť rovnakým notebookom.
+Pri prvom overení vznikla aj vykonaná kópia
+`outputs/filip/06_filip_ai_digitalne_problemy_vysledky.ipynb` na prezretie výsledkov.
+Zdrojový notebook 06 vo verziovanom priečinku má pred commitom vyčistené výstupy.
+
+**Zaradenie do prezentácie:** Filipova časť skúma CZE + SVK a digitálne riešenie
+problémov; časti chalanov zatiaľ používajú GBR a prírodné vedy. Pred odovzdaním
+treba rozšíriť spoločný názov a úvod a pri každej časti uviesť jej krajiny a výsledok.
+Notebook pripravuje podklady, samotnú prezentáciu nemení.
+
 ## 7. Každodenný postup a spolupráca
 
 ### Keď projekt otvoríš nabudúce
@@ -228,6 +302,9 @@ veľké dáta a vygenerované dátové súbory zostávajú lokálne.
 | --- | --- | --- |
 | `notebooks/01_uvod_do_dat.ipynb` | Aktuálny východiskový notebook. | Áno |
 | `notebooks/02_praca_s_parquetom.ipynb` | Rýchle načítanie vybraných premenných zo spoločného Parquetu. | Áno |
+| `notebooks/03_…` až `05_…` | Analýzy rodinného zázemia a motivácie (GBR, prírodné vedy). | Áno |
+| `notebooks/06_filip_ai_digitalne_problemy.ipynb` | Filipova analýza AI a digitálnych problémov (CZE + SVK). | Áno |
+| `outputs/filip/` | Generované grafy, tabuľky a podklady do prezentácie. | Nie, vzniknú spustením notebooku 06. |
 | `src/prepare_data.py` | Jednorazový prevod celého SAV bez výberu stĺpcov. | Áno |
 | `requirements.txt` | Knižnice pre notebooky, prevod a Jupyter. | Áno |
 | `data/processed/student_full.parquet` | Všetci žiaci a všetkých 885 premenných. | Nie, vytvoríš v kroku 5 alebo dostaneš od tímu. |
